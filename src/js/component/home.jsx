@@ -7,22 +7,26 @@ import rigoImage from "../../img/rigo-baby.jpg";
 const Home = () => {
 
 	const username = "Aelf86"
-	const API_URL = "https://playground.4geeks.com/apis/fake/todos" 
+	const API_URL = "https://playground.4geeks.com/apis/fake/todos"
 	const [task, setTask] = useState({});
 	const [todos, setTodos] = useState([]);
 
 
 	const handleClick = () => {
+		if (!task.label || task.label.trim() === "") {
+			return;
+		}
+
 		setTodos([...todos, task])
 		setTask({})
 	}
 
 	const handleChange = (e) => {
-		setTask({label: e.target.value, done: false})
+		setTask({ label: e.target.value, done: false })
 	}
 
 	const createUser = async () => {
-		const response = await	fetch(`${API_URL}/user/${username}`, {
+		const response = await fetch(`${API_URL}/user/${username}`, {
 			method: "POST",
 			body: JSON.stringify([]),
 			headers: {
@@ -31,17 +35,17 @@ const Home = () => {
 		})
 		console.log(response)
 		const data = await response.json()
-		if(response.ok){
+		if (response.ok) {
 			console.log(data)
 		}
 		console.log(data)
 	}
 
 	const getTodo = async () => {
-		const response = await	fetch(`${API_URL}/user/${username}`)
+		const response = await fetch(`${API_URL}/user/${username}`)
 		console.log(response)
 		const data = await response.json()
-		if(response.ok){
+		if (response.ok) {
 			console.log(data)
 			setTodos(data)
 			return true
@@ -52,7 +56,7 @@ const Home = () => {
 	}
 
 	const updateTodo = async () => {
-		const response = await	fetch(`${API_URL}/user/${username}`, {
+		const response = await fetch(`${API_URL}/user/${username}`, {
 			method: "PUT",
 			body: JSON.stringify(todos),
 			headers: {
@@ -61,7 +65,7 @@ const Home = () => {
 		})
 		console.log(response)
 		const data = await response.json()
-		if(response.ok){
+		if (response.ok) {
 			console.log(data)
 		}
 		console.log(data)
@@ -77,10 +81,10 @@ const Home = () => {
 	}, [todos])
 
 	//filtro guarda todo menos el que quiero borrar
-	function deleteTask (id) {
+	function deleteTask(id) {
 		let aux = []
-		aux = todos.filter((item,index) =>{
-			if (index!=id) {
+		aux = todos.filter((item, index) => {
+			if (index != id) {
 				return item
 			}
 		})
@@ -88,25 +92,25 @@ const Home = () => {
 	}
 
 	return (
-		<div className="text-center">
+		<div className="text-center d-grid gap-3">
 			<h1 className="text-center mt-5">To-do list with React and Fetch!</h1>
 
 
 			<div>
 				<input type="text" onChange={handleChange} />
-				<button onClick={handleClick}>Add task</button>
+				<button className="btn btn-secondary m-2" onClick={handleClick}>Add task</button>
 
 			</div>
-			
+
 			<ul>
 				{todos && todos.length > 0 && todos.map((todo, index) => {
 					return (
 						<li key={todo.id}>
 							{todo.label}
-							<button className="btn btn-danger" onClick={() => deleteTask(index)}>Delete</button>
+							<button className="btn btn-dark list-inline m-1" onClick={() => deleteTask(index)}>Delete task</button>
 						</li>
-						)
-					})}
+					)
+				})}
 			</ul>
 
 		</div>
