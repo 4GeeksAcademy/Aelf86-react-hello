@@ -6,8 +6,6 @@ import rigoImage from "../../img/rigo-baby.jpg";
 //create your first component
 const Home = () => {
 
-	const username = "Aelf86"
-	const API_URL = "https://playground.4geeks.com/apis/fake/todos"
 	const [task, setTask] = useState({});
 	const [todos, setTodos] = useState([]);
 
@@ -26,49 +24,43 @@ const Home = () => {
 	}
 
 	const createUser = async () => {
-		const response = await fetch(`${API_URL}/user/${username}`, {
+		const response = await fetch("https://playground.4geeks.com/todo/users/Aelf86", {
 			method: "POST",
 			body: JSON.stringify([]),
 			headers: {
 				"Content-Type": "application/json"
 			}
 		})
-		console.log(response)
 		const data = await response.json()
-		if (response.ok) {
-			console.log(data)
-		}
-		console.log(data)
+
+
 	}
 
 	const getTodo = async () => {
-		const response = await fetch(`${API_URL}/user/${username}`)
-		console.log(response)
+		const response = await fetch("https://playground.4geeks.com/todo/users/Aelf86")
+
 		const data = await response.json()
 		if (response.ok) {
-			console.log(data)
-			setTodos(data)
+			setTodos(data.todos)
 			return true
 		}
-		console.log(data)
+
 		setTodos(false)
 		return false
 	}
 
 	const updateTodo = async () => {
-		const response = await fetch(`${API_URL}/user/${username}`, {
+		const response = await fetch("https://playground.4geeks.com/todo/todos/Aelf86", {
 			method: "PUT",
 			body: JSON.stringify(todos),
 			headers: {
 				"Content-Type": "application/json"
 			}
 		})
-		console.log(response)
+
 		const data = await response.json()
-		if (response.ok) {
-			console.log(data)
-		}
-		console.log(data)
+
+
 	}
 
 	useEffect(() => {
