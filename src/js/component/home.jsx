@@ -10,17 +10,31 @@ const Home = () => {
 	const [todos, setTodos] = useState([]);
 
 
-	const handleClick = () => {
+	const handleClick = async () => {
 		if (!task.label || task.label.trim() === "") {
 			return;
 		}
-
+		const response = await fetch("https://playground.4geeks.com/todo/todos/Aelf86", {
+			method: "POST",
+			headers: {
+				"Content-type": "application/json"
+			},
+			body: JSON.stringify({
+				label:task.label,
+				is_done:false
+			})
+		})
+		const data=await response.json()
+		console.log(data)
 		setTodos([...todos, task])
-		setTask({})
+		setTask({
+			label:""
+		})
 	}
 
+
 	const handleChange = (e) => {
-		setTask({ label: e.target.value, done: false })
+		setTask({ label: e.target.value, is_done: false })
 	}
 
 	const createUser = async () => {
@@ -32,7 +46,6 @@ const Home = () => {
 			}
 		})
 		const data = await response.json()
-
 
 	}
 
@@ -72,15 +85,25 @@ const Home = () => {
 		updateTodo()
 	}, [todos])
 
-	//filtro guarda todo menos el que quiero borrar
-	function deleteTask(id) {
-		let aux = []
-		aux = todos.filter((item, index) => {
-			if (index != id) {
-				return item
-			}
+	
+	const deleteTask=async(id) =>{
+		const response = await fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
+			method: "DELETE",
+			// headers: {
+			// 	"Content-type": "application/json"
+			// },
+			
 		})
-		setTodos(aux)
+		const data=await response.json()
+		console.log(data)
+		getTodo()
+		// let aux = []
+		// aux = todos.filter((item, index) => {
+		// 	if (index != id) {
+		// 		return item
+		// 	}
+		// })
+		// setTodos(aux)
 	}
 
 	return (
@@ -89,7 +112,7 @@ const Home = () => {
 
 
 			<div>
-				<input type="text" onChange={handleChange} />
+				<input type="text" value={task.label} placeholder="Add your task" onChange={handleChange} />
 				<button className="btn btn-secondary m-2" onClick={handleClick}>Add task</button>
 
 			</div>
@@ -99,7 +122,7 @@ const Home = () => {
 					return (
 						<li key={todo.id}>
 							{todo.label}
-							<button className="btn btn-dark list-inline m-1" onClick={() => deleteTask(index)}>Delete task</button>
+							<button className="btn btn-dark list-inline m-1" onClick={() => deleteTask(todo.id)}>Delete task</button>
 						</li>
 					)
 				})}
