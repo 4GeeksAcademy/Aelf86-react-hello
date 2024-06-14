@@ -89,21 +89,10 @@ const Home = () => {
 	const deleteTask=async(id) =>{
 		const response = await fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
 			method: "DELETE",
-			// headers: {
-			// 	"Content-type": "application/json"
-			// },
-			
 		})
 		const data=await response.json()
 		console.log(data)
 		getTodo()
-		// let aux = []
-		// aux = todos.filter((item, index) => {
-		// 	if (index != id) {
-		// 		return item
-		// 	}
-		// })
-		// setTodos(aux)
 	}
 
 	return (
@@ -113,21 +102,20 @@ const Home = () => {
 
 			<div>
 				<input type="text" value={task.label} placeholder="Add your task" onChange={handleChange} />
-				<button className="btn btn-secondary m-2" onClick={handleClick}>Add task</button>
+				<button className="btn btn-success m-2" onClick={handleClick}>Add task</button>
 
 			</div>
 
 			<ul>
 				{todos && todos.length > 0 && todos.map((todo, index) => {
 					return (
-						<li key={todo.id}>
+						<li className="list-group-item d-flex justify-content-between .bg-secondary" key={todo.id}>
 							{todo.label}
 							<button className="btn btn-dark list-inline m-1" onClick={() => deleteTask(todo.id)}>Delete task</button>
 						</li>
 					)
 				})}
 			</ul>
-
 		</div>
 	);
 };
