@@ -20,15 +20,15 @@ const Home = () => {
 				"Content-type": "application/json"
 			},
 			body: JSON.stringify({
-				label:task.label,
-				is_done:false
+				label: task.label,
+				is_done: false
 			})
 		})
-		const data=await response.json()
+		const data = await response.json()
 		console.log(data)
 		setTodos([...todos, task])
 		setTask({
-			label:""
+			label: ""
 		})
 	}
 
@@ -85,12 +85,12 @@ const Home = () => {
 		updateTodo()
 	}, [todos])
 
-	
-	const deleteTask=async(id) =>{
+
+	const deleteTask = async (id) => {
 		const response = await fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
 			method: "DELETE",
 		})
-		const data=await response.json()
+		const data = await response.json()
 		console.log(data)
 		getTodo()
 	}
@@ -111,7 +111,10 @@ const Home = () => {
 					return (
 						<li className="list-group-item d-flex justify-content-between .bg-secondary" key={todo.id}>
 							{todo.label}
-							<button className="btn btn-dark list-inline m-1" onClick={() => deleteTask(todo.id)}>Delete task</button>
+							<button className="btn btn-dark list-inline m-1" onClick={() => deleteTask(todo.id)}>Delete 
+								<i class="fa-solid fa-trash"></i>
+							</button>
+
 						</li>
 					)
 				})}
